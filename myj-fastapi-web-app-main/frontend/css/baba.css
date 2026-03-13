@@ -1,0 +1,219 @@
+body {
+    font-family: "Yu Gothic", sans-serif;
+    text-align: center;
+    background: #2e8b57;
+    /* 濃い緑 */
+    color: white;
+}
+
+hr {
+    border: none;
+    background-color: #f0fff6;
+    border-top: 2px dashed #117f33;
+}
+
+h1 {
+    font-size: 40px;
+    margin-bottom: 20px;
+}
+
+select {
+    font-size: 20px;
+    padding: 5px;
+    margin: 10px;
+    border-radius: 5px;
+}
+
+button {
+    font-size: 20px;
+    padding: 10px 20px;
+    margin: 10px;
+    border: none;
+    border-radius: 10px;
+    background-color: #f0c040;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+button:hover {
+    background-color: #ffd700;
+}
+
+.card {
+    display: inline-block;
+    background: white;
+    color: black;
+    border-radius: 8px;
+    padding: 15px 10px;
+    margin: 5px;
+    width: 60px;
+    font-size: 24px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    text-align: center;
+}
+
+/* 裏面カードの見た目 */
+.back {
+    display: inline-block;
+    background: #444;
+    color: white;
+    border-radius: 8px;
+    padding: 15px 10px;
+    margin: 5px;
+    width: 60px;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    border: 3px solid #777;
+}
+
+/* ゲームフェーズの初期表示設定 */
+#game,
+#drawPhase,
+#resultPhase,
+#checkPhase {
+    display: none;
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 600px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 15px;
+}
+
+#setup {
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 500px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 15px;
+}
+
+#status {
+    margin: 15px auto;
+    max-width: 600px;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 10px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+#status h3 {
+    text-align: center;
+}
+
+#opponentCards {
+    margin-top: 20px;
+}
+
+
+.dropmenu {
+    list-style-type: none;
+    display: flex;
+    justify-content: center;
+    width: 750px;
+    margin: 0 auto;
+    padding: 0;
+}
+
+.dropmenu li ul li a {
+    text-align: center;
+    padding: 7px 10px;
+    border-top: 1px solid #728db3;
+}
+
+.dropmenu li {
+    background: #f9fafa;
+    text-align: center;
+    box-shadow: 1px 1px 1px rgba(82, 179, 79, 0.7) inset, -1px -1px 1px rgba(115, 139, 179, 0.7) inset;
+    width: 25%;
+    margin: 0;
+    padding: 0;
+    position: relative;
+}
+
+.dropmenu li ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    visibility: hidden;
+    opacity: 0;
+    perspective: 500px;
+    
+}
+
+.dropmenu ul li {
+    transform: rotateY(90deg);
+    transform-origin: 50% 0;
+    transition: .5s;
+}
+
+.dropmenu li:hover li {
+    transform: rotateY(0);
+}
+
+.dropmenu ul li:nth-child(2) {
+    transition-delay: .1s;
+}
+
+.dropmenu ul li:nth-child(3) {
+    transition-delay: .2s;
+}
+
+
+.dropmenu li:hover ul {
+    visibility: visible;
+    opacity: 1;
+}
+
+.dropmenu li ul li {
+    width: 150px;
+}
+
+.dropmenu li a {
+    margin: 0;
+    padding: 7px 0;
+    display: block;
+    color: #090909;
+    font: bold 11px "游ゴシック", Helvetica;
+    letter-spacing: 0.1em;
+    text-decoration: none;
+}
+
+.dropmenu li a:hover {
+    background: #8f8f8f;
+}
+
+.dropmenu li:hover>a {
+    background: #8c8c8c;
+}
+
+.navbar {
+    width: 100%;
+    margin: 0;
+    padding: 5px 0;
+    height: 70px;
+    display: flex;
+    align-content: space-around;
+}
+
+.navbar-l {
+    margin: auto 0;
+}
+
+.navlogo {
+    color: #c7c9c9;
+    font: bold 20px "游ゴシック", Helvetica;
+    text-align: left;
+    margin: auto 8px auto 0px;
+    white-space: nowrap;
+}
+
+.navbar-r {
+    background: #f5f8f7;
+    box-shadow: 1px 1px 1px rgba(237, 238, 237, 0.7) inset, -1px -1px 1px rgba(115, 139, 179, 0.7) inset,
+        0px 1px 3px #1e1e20;
+    width: 100%;
+    margin: auto 0;
+    padding: 0;
+}

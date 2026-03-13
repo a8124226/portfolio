@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>投稿詳細</title>
+    <link rel="stylesheet" href="/css/general.css" />
+
+    <!-- jsファイルをimport -->
+     <style>
+    body {
+      background-color: #121212;
+      color: #ffffff;
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1, h2 {
+      color: #ffffff;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: #1e1e1e;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+    }
+
+    .meta-info {
+      color: #ccc;
+      font-size: 0.95em;
+      margin-top: 10px;
+      line-height: 1.6;
+    }
+
+    .task-image {
+      margin-top: 15px;
+      max-width: 100%;
+      border-radius: 10px;
+    }
+
+    .actions {
+      margin-top: 20px;
+      display: flex;
+      gap: 15px;
+    }
+
+    .actions a {
+      text-decoration: none;
+      color: #ffffff;
+      background-color: #2c2c2c;
+      padding: 10px 15px;
+      border-radius: 6px;
+      transition: background-color 0.3s;
+      border: 1px solid #444;
+    }
+
+    .actions a:hover {
+      background-color: #444;
+    }
+
+    .error {
+      color: red;
+    }
+
+    #message-area {
+      margin-bottom: 15px;
+      padding: 10px;
+      background-color: #333;
+      border-left: 5px solid #bb86fc;
+      border-radius: 4px;
+    }
+  </style>
+
+    <script type="text/javascript" src="/js/general.js"></script>
+    <script type="text/javascript" src="/js/api.js"></script>
+  </head>
+  <body>
+<div style="text-align: center; margin-bottom: 20px;">
+<img src="aaa.png" alt="MITUKIロゴ" style="max-width:300px; height:auto;" />
+</div>
+    <div class="container">
+      <h1>投稿詳細</h1>
+      <div id="message-area" class="hidden"></div>
+      <div id="tasksaaa-detail">
+        <p>投稿を読み込み中です...</p>
+      </div>
+      <div class="actions">
+        <a href="/indexaaa.html">一覧へ戻る</a>
+        <a id="modifyLink" href="#">修正</a>
+        <a id="deleteLink" href="#">削除</a>
+        <a id="commentLink" href="#">コメント</a>
+      </div>
+    </div>
+  </body>
+  <script>
+    if (!checkLogin()) {
+      handleLoginError();
+    }
+
+    const API_BASE_URL = "http://localhost:8000";
+    const ARTICLE_PATH = "tasksaaa";
+    const taskDetail = document.getElementById("tasksaaa-detail");
+
+    // URLから記事IDを取得する
+    const urlParams = new URLSearchParams(window.location.search);
+    const taskId = urlParams.get("taskId");
+    console.log("taskId:", taskId);
+
+    if (!taskId) {
+      taskDetail.innerHTML = `<p class="error">記事IDが指定されていません。</p>`;
+    } else {
+      const ARTICLE_DETAIL_URL = `${API_BASE_URL}/${ARTICLE_PATH}/${taskId}`;
+
+      fetch(ARTICLE_DETAIL_URL, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(
+              `${ARTICLE_DETAIL_URL} 投稿の取得に失敗しました。ステータス: ${response.status}`
+            );
+          }
+          return response.json();
+        })
+        .then((task) => {
+          taskDetail.innerHTML = `
+              <h2>${task.title}</h2>
+              <div class="meta-info">
+                ユーザーID: ${task.user_id} | 投稿日: ${task.due_date}
+                <br />
+                ${task.img_path ? `<img src="${API_BASE_URL}${task.img_path}" alt="タスク画像" class="task-image">` : ""}
+                <br />
+                ${task.body}
+              </div>
+            `;
+        })
+        .catch((error) => {
+          console.error("エラー:", error);
+          taskDetail.innerHTML = `<p class="error">${error.message}</p>`;
+        });
+    }
+
+    // DOMの読み込み完了後に実行するのが安全
+    document.addEventListener("DOMContentLoaded", () => {
+      // idを使ってa要素を取得
+      const modifyLink = document.getElementById("modifyLink");
+      modifyLink.href = `/tasksaaa-update.html?taskId=${taskId}`;
+      const deleteLink = document.getElementById("deleteLink"); // 削除リンクを取得
+      deleteLink.href = `/tasksaaa-delete.html?taskId=${taskId}`;
+      const commentLink = document.getElementById("commentLink"); 
+      commentLink.href = `/tasksaaa-comment.html?taskId=${taskId}`;
+    });
+  </script>
+</html>

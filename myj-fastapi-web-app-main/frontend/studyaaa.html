@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>学習記録の投稿</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #1c1f26;
+      color: #e0e0e0;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background-color: #2a2d35;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #ffffff;
+    }
+
+    label {
+      display: block;
+      margin-top: 20px;
+      font-weight: 600;
+      color: #cccccc;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    input[type="date"],
+    input[type="file"],
+    textarea {
+      width: 100%;
+      padding: 12px;
+      margin-top: 8px;
+      border-radius: 6px;
+      border: 1px solid #555;
+      background-color: #3a3d44;
+      color: #ffffff;
+      box-sizing: border-box;
+    }
+
+    input[type="file"] {
+      background-color: #1c1f26;
+      color: #ccc;
+    }
+
+    textarea {
+      resize: vertical;
+    }
+
+    button {
+      margin-top: 30px;
+      width: 100%;
+      padding: 14px;
+      background-color: #00b894;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #00a383;
+    }
+
+    ::placeholder {
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>学習記録を投稿する</h2>
+    <form action="/tasksaaa" method="POST" enctype="multipart/form-data">
+      <label for="subject">学習科目</label>
+      <input type="text" id="subject" name="subject" placeholder="例: 英語、数学、プログラミング" required>
+
+      <label for="study_time_hours">学習時間 (h)</label>
+      <input type="number" id="study_time_hours" name="study_time_hours" min="0.5" step="0.5" placeholder="例: 1.5" required>
+
+      <label for="study_date">学習日</label>
+      <input type="date" id="study_date" name="study_date" required>
+
+      <label for="comment">コメント（任意）</label>
+      <textarea id="comment" name="comment" rows="4" placeholder="今日の学び、気づきなど自由に記入してください"></textarea>
+
+      <label for="image">写真や動画で記録（任意）</label>
+      <input type="file" id="image" name="image" accept="image/*">
+
+      <button type="submit">投稿する</button>
+    </form>
+  </div>
+</body>
+</html>

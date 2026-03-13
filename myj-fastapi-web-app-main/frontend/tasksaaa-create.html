@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!--<title>タスク新規作成 | TODOアプリ</title>-->
+  <title>学習記録 </title>
+  <!-- cssファイルをimport -->
+  <link rel="stylesheet" href="/css/general.css">
+
+  <!-- jsファイルをimport -->
+  <script type="text/javascript" src="/js/general.js"></script>
+  <script type="text/javascript" src="/js/api.js"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #1c1f26;
+      color: #e0e0e0;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background-color: #2a2d35;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #ffffff;
+    }
+
+    label {
+      display: block;
+      margin-top: 20px;
+      font-weight: 600;
+      color: #cccccc;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    input[type="date"],
+    input[type="file"],
+    textarea {
+      width: 100%;
+      padding: 12px;
+      margin-top: 8px;
+      border-radius: 6px;
+      border: 1px solid #555;
+      background-color: #3a3d44;
+      color: #ffffff;
+      box-sizing: border-box;
+    }
+
+    input[type="file"] {
+      background-color: #1c1f26;
+      color: #ccc;
+    }
+
+    textarea {
+      resize: vertical;
+    }
+
+    button {
+      margin-top: 30px;
+      width: 100%;
+      padding: 14px;
+      background-color: #00b894;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #00a383;
+    }
+
+    ::placeholder {
+      color: #888;
+    }
+
+  </style>
+</head>
+
+<body>
+  <div style="text-align: center; margin-bottom: 20px;">
+<img src="aaa.png" alt="MITUKIロゴ" style="max-width:300px; height:auto;" />
+</div>
+      <div>
+        <h2>学習記録を投稿する</h2>
+        <div id="megs" style="color: red;">&nbsp;</div>
+        <div id="task-input"></div>
+
+          <label for="subject">学習科目</label>
+          <input type="text" id="subject" name="subject" placeholder="例: 英語、数学、プログラミング" required>
+
+          <label for="study_date">学習日</label>
+          <input type="date" id="study_date" name="study_date" required>
+
+
+          <label for="taskImageInput">写真や動画で記録（任意）</label>
+          <input type="file" id="taskImageInput" name="taskImageInput">
+
+          <label for="comment">要点・ひとことメモ（任意）</label>
+          <textarea id="comment" name="comment" rows="4" placeholder="今日の学び、気づきなど自由に記入してください"></textarea>
+        </div>
+
+       <button onclick="createTask()">投稿する</button>
+    
+  
+</body>
+
+<script>
+  // ログインしていない場合、ログインページに移動
+  if (!checkLogin()) {
+    handleLoginError()
+  }
+
+  const API_BASE_URL = "http://localhost:8000";
+  const POST_ARTICLES_ENDPOINT = "/indexaaa";//編集済み
+  const POST_URL = `${API_BASE_URL}${POST_ARTICLES_ENDPOINT}`;
+
+
+  const createTask = () => {
+    const subject = document.getElementById('subject').value;
+    const study_date = document.getElementById('study_date').value;
+    const comment = document.getElementById('comment').value;
+    const taskImageInput = document.getElementById('taskImageInput');
+
+    const taskData = {
+        "title": subject.trim(),
+        "due_date": study_date,
+        "body": comment.trim() || "",
+    };
+
+    console.log("taskData:", taskData);
+    console.log("taskImageInput.files:", taskImageInput.files[0]);
+
+    createTaskApi(taskData)
+        .then(data => {
+            console.log("Task created data:", data);
+
+            // 画像がある場合は、画像をアップロード
+            if (taskImageInput.files.length > 0) {
+                // 画像アップロードのPromiseを返す
+                return updateTaskImageApi(data.id, taskImageInput.files[0])
+                    .then(() => {
+                        console.log('画像アップロードが完了しました');
+                        alert('記録・投稿が完了しました');
+                        location.href = '/indexaaa.html';
+                    })
+                    .catch(imageUploadError => {
+                        // 画像アップロードエラー時の処理
+                        console.error('画像アップロードエラー:', imageUploadError);
+                        alert('タスクは作成されましたが、画像のアップロードに失敗しました。');
+                        location.href = '/indexaaa.html'; // タスクは作成されているのでページ遷移
+                    });
+            } else {
+                console.log('画像がありません');
+                alert('記録・投稿が完了しました');
+                location.href = '/indexaaa.html';
+                return Promise.resolve(); // Promiseを返す
+            }
+        })
+        .catch(taskCreationError => {
+            // タスク作成エラー時の処理
+            console.error('タスク作成エラー:', taskCreationError);
+            alert('タスクの作成に失敗しました。');
+            // 必要に応じてエラーメッセージを表示
+        });
+    };
+    
+  
+
+</script>
+
+</html>
+

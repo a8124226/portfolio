@@ -1,0 +1,40 @@
+<!-- Ctrl+/でコメント作成 -->
+<!-- ！＋Tabキーでデフォルトが記載される -->
+<!-- JSはHTMLのbodyの一番下にscriptで書く -->
+<!DOCTYPE html>
+<html lang="ja">
+<!-- 日本語に修正-->
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <!-- この辺はbootstrapっていうサイトからコピーしただけ -->
+    <title>Document</title>
+</head>
+
+<body class="bg-light">
+    <div class="container w-75">
+        <h1 class="text-center text-info my-4">TODO</h1>
+        <h6 class="text-center text-info my-4">青山学院大学<br>社会情報学部社会情報学科<br>山本優大</h6>   
+        <hr>
+    <div class="text-center">
+        <p>≪ご利用方法≫</p>
+        <p>・入力し、EnterでTODOを作成</p>
+        <p>・左クリックでチェックマーク</p>
+        <p>・右クリックで削除</p>
+    </div>
+        <!-- この辺の設定はbootstrapの初期設定を反映しているだけ -->
+        <form id="form" class="mb-4">
+            <input type="text" id="input" class="form-control" placeholder="TODOを入力してください" autocomplete = "off">
+        </form>
+        <ul class="list-group text-secondary" id="ul">
+            <!-- ここにTODOが追加されていく -->
+        </ul>
+    </div>
+    <script src="js/todo.js"></script>
+</body>
+
+</html>

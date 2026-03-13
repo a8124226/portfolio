@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8"/>
+    <title>トップページ | 投稿履歴</title>
+  
+    <link rel="stylesheet" href="/css/general.css" />  <!-- ここを編集 -->
+ <style>
+    body {
+      background-color: #121212;
+      color: #ffffff;
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1, h2 {
+      color: #ffffff;
+    }
+
+    button {
+      background-color: #1f1f1f;
+      color: white;
+      border: 1px solid #444;
+      padding: 10px 20px;
+      margin: 10px 5px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #333;
+    }
+
+    a {
+      color: #80cbc4;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    #tasks-list {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .task-card {
+      background-color: #1e1e1e;
+      border: 1px solid #333;
+      border-radius: 10px;
+      padding: 15px;
+    }
+
+    .task-card a {
+      font-weight: bold;
+      color: #bb86fc;
+    }
+
+    .task-meta {
+      font-size: 0.9em;
+      color: #ccc;
+      margin-top: 5px;
+    }
+  </style>
+  
+    <script type="text/javascript" src="/js/general.js"></script>
+    <script type="text/javascript" src="/js/api.js"></script>
+  </head>
+
+  <body>
+      <div style="text-align: center; margin-bottom: 20px;">
+   <img src="aaa.png" alt="MITUKIロゴ" style="max-width:300px; height:auto;" />
+  <h4>青山学院大学<br> 社会情報学部社会情報学科<br> 山本優大</h4><br>
+    <div>
+      <h1 id="welcome"></h1>
+      <button onclick="logout()">ログアウト</button>
+    </div>
+
+    <h2>投稿一覧</h2>
+    <a href="/tasksaaa-create.html"><!-- 編集済み -->
+      <button>投稿する</button>
+    </a>
+
+    <div id="tasks-list"><!-- 編集済み -->
+      <!-- ここにタスクが入る -->
+    </div>
+</div>
+    <script>
+      // ログインしていない場合、ログインページに移動
+      if (!checkLogin()) {
+        handleLoginError();
+      }
+
+      // ユーザー情報を取得
+      getMeApi().then((data) => {
+        console.log("data:", data);
+        const welcomeH1 = document.getElementById("welcome");
+        welcomeH1.innerText = `ようこそ!! ${data.nickname}さん`;
+      });
+
+      const API_BASE_URL = "http://localhost:8000";
+      const ARTICLES_ENDPOINT = "tasksaaa";  //編集済み  
+      const ARTICLES_URL = `${API_BASE_URL}/${ARTICLES_ENDPOINT}`;
+      const tasksList = document.getElementById("tasks-list");
+
+
+
+      fetch(ARTICLES_URL, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`HTTPエラー! ステータス: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then((jsonObj) => {
+          jsonObj.sort((a, b) => b.id - a.id); // task.id の降順にソート
+          tasksList.innerHTML = ""; 
+          jsonObj.forEach((task) => {
+            const taskDiv = document.createElement("div");//この数行↓を変更の必要あり
+            taskDiv.innerHTML = `
+              <a href="/tasksaaa-detail.html?taskId=${task.id}">
+              ${task.title}
+              </a>
+                投稿日: ${task.due_date}
+              
+                
+              ユーザーID :${task.user_id}
+              
+          `;
+            tasksList.appendChild(taskDiv);
+          });
+        })
+        .catch((error) => {
+          console.error("エラー:", error);
+          tasksList.innerHTML = `<p style="color:red;">データ取得に失敗しました。<br>${error.message}</p>$`;
+        });
+    </script>
+  </body>
+</html>

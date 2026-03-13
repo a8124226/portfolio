@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <title>投稿編集 </title>
+
+  <link rel="stylesheet" href="/css/general.css">
+  <script type="text/javascript" src="/js/general.js"></script>
+  <script type="text/javascript" src="/js/api.js"></script>
+
+  <style>
+  body {
+    background-color: #121212;
+    color: #ffffff;
+    font-family: 'Segoe UI', 'Hiragino Kaku Gothic ProN', sans-serif;
+    margin: 0;
+    padding: 20px;
+  }
+
+  h2 {
+    color: #ffffff;
+    text-align: center;
+    margin-top: 30px;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 5px;
+    color: #cccccc;
+  }
+
+  input[type="text"],
+  input[type="date"],
+  textarea,
+  input[type="file"] {
+    width: 100%;
+    max-width: 500px;
+    padding: 10px;
+    margin-bottom: 20px;
+    background-color: #1f1f1f;
+    color: #ffffff;
+    border: 1px solid #444;
+    border-radius: 6px;
+    box-sizing: border-box;
+  }
+
+  textarea {
+    height: 100px;
+    resize: vertical;
+  }
+
+  button[type="submit"] {
+    background-color: #292929;
+    color: #ffffff;
+    border: 1px solid #555;
+    padding: 12px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  button[type="submit"]:hover {
+    background-color: #444;
+  }
+
+  .actions {
+    margin-top: 30px;
+    text-align: center;
+  }
+
+  .actions a {
+    color: #80cbc4;
+    text-decoration: none;
+    font-weight: bold;
+  }
+
+  .actions a:hover {
+    text-decoration: underline;
+  }
+
+  #message-area {
+    color: red;
+    margin: 10px 0;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  #study_date {
+  text-align: center;
+}
+ #subject {
+  text-align: center;
+}
+ #comment {
+  text-align: center;
+}
+
+</style>
+</head>
+
+<body>
+<div style="text-align: center; margin-bottom: 20px;">
+  <img src="aaa.png" alt="MITUKIロゴ" style="max-width:300px; height:auto;" />
+  <h2>投稿を修正</h2>
+
+
+<form id="modify-tasksaaa-form">
+
+  <div id="task-input">
+    <label for="subject">学習科目</label>
+    <input type="text" id="subject" name="subject" placeholder="例: 英語、数学、プログラミング" required>
+    <br />
+    <label for="study_date">学習日</label>
+    <input type="date" id="study_date" name="study_date" required>
+    <br /><br />
+    <label for="taskImageInput">写真・動画で記録（任意）</label>
+    <input type="file" id="taskImageInput" name="taskImageInput">
+    <br /><br />
+    <label for="comment">要点・ひとことメモ（任意）</label>
+    <textarea id="comment" name="comment" rows="4" placeholder="今日の学び、気づきなど自由に記入してください"></textarea>
+    <br /><br />
+  
+  </div>
+  <button type="submit">更新</button>
+  </form>
+  <div id="message-area" style="color:red; margin-top:10px;"></div>
+   <div class="actions">
+        <a href="/indexaaa.html">一覧へ戻る</a>
+        </div>
+      </div>
+</div>
+
+</body>
+<script>
+  const messageArea = document.getElementById("message-area");
+
+  // ログインしていない場合、ログインページに移動
+  if (!checkLogin()) {
+    handleLoginError()
+  }
+  const API_BASE_URL = "http://localhost:8000";
+  const ARTICLE_PATH = "tasksaaa"; 
+
+  const form = document.getElementById("modify-tasksaaa-form");
+  const subject = document.getElementById('subject')
+  const study_date = document.getElementById('study_date')
+  const taskImageInput = document.getElementById('taskImageInput')
+  const comment = document.getElementById('comment')
+ 
+
+
+const urlParams = new URLSearchParams(window.location.search);
+    const taskId = urlParams.get("taskId");
+
+
+  const moveToTop = () => {
+    setTimeout(() => {
+      window.location.href = "/indexaaa.html";
+    }, 1000);
+  };
+
+const putApi = async (url, data) => {
+  try {
+    const response = await fetch(url, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: JSON.stringify(data),
+    });
+    if (!response.ok) {
+      throw new Error(`HTTPエラー! ステータス: ${response.status}`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error("エラー:", error);
+    messageArea.innerHTML = `<p style="color:red;">データ更新に失敗しました。<br>${error.message}</p>`;
+    throw error;
+  }
+};
+
+
+    const handleFormSubmit = async (event) => {
+      event.preventDefault();
+
+      if (!taskId) {
+        console.error("フォーム送信試行エラー: 記事IDがありません。");
+        messageArea.innerHTML = `<p style="color:red;">記事IDが不明なため更新できません。</p>`;
+        return;
+      }
+      const MODIFY_ARTICLE_URL = `${API_BASE_URL}/${ARTICLE_PATH}/${taskId}`;
+
+      const subject = document.getElementById('subject').value;
+      const study_date = document.getElementById('study_date').value;
+      const comment = document.getElementById('comment').value;
+      const fileInput = document.getElementById('taskImageInput');
+      console.log("subject:", subject);
+      console.log("study_date:", study_date);
+      console.log("comment:", comment);
+
+      const data = {
+        title: subject,
+        due_date: study_date,
+        body: comment,
+      };
+      console.log("送信するデータ:", data);
+
+      try {
+        const response = await putApi(MODIFY_ARTICLE_URL, data);
+        console.log("投稿修正成功:", response);
+
+
+            // --- ② 画像がある場合は別APIでアップロード ---
+    if (fileInput.files.length > 0) {
+      const file = fileInput.files[0];
+      const formData = new FormData();
+      formData.append("image", file);
+
+      const imageUploadUrl = `${API_BASE_URL}/${ARTICLE_PATH}/${taskId}/image`;
+      const imgResponse = await fetch(imageUploadUrl, {
+        method: "PUT", 
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: formData,
+      });
+
+      if (!imgResponse.ok) {
+        throw new Error("画像の更新に失敗しました");
+      }
+      console.log("画像更新成功");
+    }
+
+    alert("投稿を更新しました");
+    window.location.href = `/tasksaaa-detail.html?taskId=${taskId}`;
+
+      } catch (error) {
+        console.error("フォーム送信エラー（記事修正失敗）:", error.message);
+        messageArea.innerHTML = `<p style="color:red;">記事の更新に失敗</p>`;
+      }
+    };
+
+
+
+    // --- 追加: タスクデータ取得関数 ---
+const getTaskDetail = async (taskId) => {
+  const url = `${API_BASE_URL}/${ARTICLE_PATH}/${taskId}`;
+  try {
+    const response = await fetch(url, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+    if (!response.ok) {
+      throw new Error("タスク取得に失敗しました");
+    }
+    const data = await response.json();
+    console.log("取得したタスク:", data);
+
+    // フォームに既存の値を反映
+    document.getElementById("subject").value = data.title || "";
+    document.getElementById("study_date").value = data.due_date || "";
+    document.getElementById("comment").value = data.body || "";
+  } catch (error) {
+    console.error(error);
+    messageArea.innerHTML = `<p style="color:red;">タスク情報の取得に失敗しました。</p>`;
+  }
+};
+
+// --- ページ読み込み時に呼び出す ---
+if (taskId) {
+  getTaskDetail(taskId);
+} else {
+  messageArea.innerHTML = `<p style="color:red;">タスクIDが指定されていません。</p>`;
+}
+
+    form.addEventListener("submit", handleFormSubmit);
+  </script>
