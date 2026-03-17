@@ -1,0 +1,310 @@
+
+.container{
+    margin:50px;
+}
+
+
+.text-content h2, 
+.text-content h3 {
+  margin: 5px;          /* 上下の余白をゼロにする */
+  line-height: 1.5;   /* 行間の高さを適度に設定（お好みで1.2〜1.6） */
+}
+
+.icon {
+  display: flex;
+  align-items: center; 
+}
+
+.text-content {
+  display: flex;
+  flex-direction: column; /* 念のため縦並びを保証 */
+}
+
+/* 画像を丸いアイコン型にする */
+.icon-photo {
+  width: 200px;        /* アイコンの幅 */
+  height: 200px;       /* アイコンの高さ（幅と同じにする） */
+  border-radius: 50%;  /* 正方形を丸くする魔法のコード */
+  object-fit: cover;   /* 画像が歪まないように調整 */
+  border: 2px solid #ccc; /* 必要であれば枠線を追加 */
+}
+
+.panel-container {
+    display: flex;             /* 横並びにする */
+    justify-content: flex-start; /*左揃え */
+    flex-wrap: wrap;          /* 幅が足りなくなったら折り返す */
+    gap: 30px;                /* パネル間の隙間 */
+    padding: 20px;
+}
+
+.panel {
+    display: block;       /* aタグをカード全体の範囲に広げる */
+    text-decoration: none; /* 1. 下線を消す */
+    color: inherit;       /* 2. 文字の色が変わるのを防ぐ（親の文字色を引き継ぐ） */
+
+    flex: 0 1 300px;
+    border: 1px solid #ddd;
+    border-radius: 15px;      /* 角丸 */
+    overflow: hidden;         /* 画像が角丸からはみ出ないように */
+    background: #fff;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* クリックした瞬間や訪問済みの色変化も無効化したい場合 */
+.panel:visited, 
+.panel:active, 
+.panel:focus {
+    text-decoration: none;
+    color: inherit;
+    outline: none; /* フォーカス時の枠線も消すとスッキリします */
+}
+
+/* ホバー時に浮き上がる*/
+.panel:hover {
+    transform: translateY(-5px);    /* 上に5px動く */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12); /* 影を強くする */
+    border-color: #007bff;         /* 枠線の色を変えて反応を示す */
+}
+
+
+/* パネル内の画像 */
+.panel .image img {
+    width: 100%;              /* パネルの幅に合わせる */
+    height: 180px;            /* 高さを固定して揃える */
+    object-fit: cover;        /* 画像を切り抜いて比率を保つ */
+    border-bottom: 1px solid #ddd; /* 画像の下に境界線を引く */
+}
+
+/* テキスト周りの余白 */
+.title, .language, .text {
+    padding: 10px 15px;
+}
+
+.title p {
+    font-weight: bold;
+    font-size: 1.5rem;
+    margin: 0;
+}
+
+.language {
+    color: #007bff;
+    font-size: 0.9rem;
+    font-family: monospace;  
+}
+
+
+/* --- 見出しの刷新 --- */
+h1 {
+    position: relative;
+    padding: 0.5rem 1rem;
+    font-size: 1.8rem;
+    color: #2c3e50;
+    text-align: left; /* 中央寄せから左寄せへ */
+    margin: 60px 0 30px 0;
+    border-bottom: 2px solid #eee;
+}
+
+/* 数字を消して、アクセントの線を横に置くスタイル */
+h1::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 60px;
+    height: 2px;
+    background: #007bff; /* 青いアクセント線 */
+}
+
+
+.skills-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    padding: 20px;
+}
+
+
+
+.contact {
+    color: #000;
+    padding: 10px 20px;
+    border-radius: 15px;
+    margin-top: 80px;
+} 
+
+.contact h1 {
+    color: #090b41;
+    border-bottom: 1px solid #555;
+}
+
+
+.contact h2 {
+    font-size: 1rem;
+    font-weight: normal;
+} 
+
+/* ここからナビバーの設定 */
+.dropmenu {
+    list-style-type: none;
+    display: flex;
+    justify-content: center;
+    width: 750px;
+    margin: 0 auto;
+    padding: 0;
+}
+
+.dropmenu li ul li a {
+    text-align: center;
+    padding: 7px 10px;
+    border-top: 1px solid #728db3;
+}
+
+.dropmenu li {
+    background: #f9fafa;
+    text-align: center;
+    box-shadow: 1px 1px 1px rgba(82, 179, 79, 0.7) inset, -1px -1px 1px rgba(115, 139, 179, 0.7) inset;
+    width: 25%;
+    margin: 0;
+    padding: 0;
+    position: relative;
+}
+
+.dropmenu li ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    visibility: hidden;
+    opacity: 0;
+    perspective: 500px;
+    
+}
+
+.dropmenu ul li {
+    transform: rotateY(90deg);
+    transform-origin: 50% 0;
+    transition: .5s;
+}
+
+.dropmenu li:hover li {
+    transform: rotateY(0);
+}
+
+.dropmenu ul li:nth-child(2) {
+    transition-delay: .1s;
+}
+
+.dropmenu ul li:nth-child(3) {
+    transition-delay: .2s;
+}
+
+
+.dropmenu li:hover ul {
+    visibility: visible;
+    opacity: 1;
+}
+
+.dropmenu li ul li {
+    width: 150px;
+}
+
+.dropmenu li a {
+    margin: 0;
+    padding: 7px 0;
+    display: block;
+    color: #090909;
+    font: bold 11px "游ゴシック", Helvetica;
+    letter-spacing: 0.1em;
+    text-decoration: none;
+}
+
+.dropmenu li a:hover {
+    background: #8f8f8f;
+}
+
+.dropmenu li:hover>a {
+    background: #8c8c8c;
+}
+
+.navbar {
+    width: 100%;
+    margin: 0;
+    padding: 5px 0;
+    height: 70px;
+    display: flex;
+    align-content: space-around;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: #fff; /* 背景色をつけないと透けます */
+}
+
+.navbar-l {
+    margin: auto 0;
+}
+
+.navlogo {
+    color: #c7c9c9;
+    font: bold 20px "游ゴシック", Helvetica;
+    text-align: left;
+    margin: auto 8px auto 0px;
+    white-space: nowrap;
+}
+
+.navbar-r {
+    background: #f5f8f7;
+    box-shadow: 1px 1px 1px rgba(237, 238, 237, 0.7) inset, -1px -1px 1px rgba(115, 139, 179, 0.7) inset,
+        0px 1px 3px #1e1e20;
+    width: 100%;
+    margin: auto 0;
+    padding: 0;
+}
+
+
+/* 言語エリア全体のスタイル（必要であれば） */
+.language {
+    font-size: 18px;
+    color: #666; /* カンマの色 */
+}
+
+/* 各言語ごとの色定義（統一したい色を設定してください） */
+.lang-html {
+    color: #fff; 
+    background-color: #E44D26;
+    font-weight: bold;
+    padding: 2px 4px;
+    border-radius: 3px;
+}
+
+.lang-css {
+    color: #fff; 
+    background-color:#264DE4;
+    font-weight: bold;
+    padding: 2px 4px;
+    border-radius: 3px;
+}
+
+.lang-js {
+    color: #f0db4f; 
+    background-color: #333;
+    font-weight: bold;
+    padding: 2px 4px;
+    border-radius: 3px;
+}
+
+.lang-python {
+    color: #FFD43B; 
+    background-color: #3776AB;
+    font-weight: bold;
+    padding: 2px 4px;
+    border-radius: 3px;
+}
+
+.lang-sql {
+    color: #fff; 
+    background-color: #44a199;
+    font-weight: bold;
+    padding: 2px 4px;
+    border-radius: 3px;
+}

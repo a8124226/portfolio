@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>形態素解析</title>
+    <link rel="stylesheet" href="demo.css">
+<body>
+    
+  <div class="container">
+        <h1>形態素解析</h1>
+        <img src="demo-colab0.png" alt="">
+       <div class="detail">
+            <span>制作期間：2025年2月</span>
+            <div class="tech-stack">
+                <span class="badge">Python</span>
+            </div>
+        </div>
+
+        <div class="text">
+            <h1>≪制作について≫</h1>
+
+            <div class="title">
+                <h2>分析の目的</h2>   
+            </div>
+            <div class="comment">
+                <p>各文章生成AIごとに特徴がある。その特徴を理解することで、用途や目的に応じた最適なAI選択と効果的なプロンプト設計が可能になる。
+                </p>
+            </div>
+
+            <div class="title">
+                <h2>分析の方法</h2>   
+            </div>
+            <div class="comment">
+                <p>分析ツール</p>
+                <ul>
+                    <li>ChatGPT (GPT-4o mini) *以下ChatGPTと呼ぶ</li>
+                    <li>Gemini (Gemini 2.0 Flash) *以下Geminiと呼ぶ</li>
+                    <li>Claude (Claude 3.5 Sonnet) *以下Claudeと呼ぶ</li>
+                    <li>sudachiPy : 高精度な日本語形態素解析ライブラリ</li>
+                </ul>
+                <p>共通プロンプト</p>
+                <ol type="A">
+                    <li>地球温暖化について説明してください</li>
+                    <li>失敗したとき、どう立ち直るべきかアドバイスをください。</li>
+                    <li>生成AIってなに？小学生にわかるようにおしえて。</li>
+                </ol>
+                <p>分析方法</p>
+                <ol>
+                    <li>プロンプトAをChatGPT,Gemini,Claudeに入力し、回答文において総語数と品詞分布を分析する。</li>
+                    <li>プロンプトBをChatGPT,Gemini,Claudeに入力し、回答文において感情語と文末表現を分析する。</li>
+                    <li>プロンプトCをChatGPT,Gemini,Claudeに入力し、回答文において漢字率と専門用語使用率を分析する。</li>
+                </ol>
+                
+                
+            </div>
+            <div class="title">
+                <h2>分析の結果</h2>   
+            </div>
+            <div class="comment">
+                <h3>1,総語数と品詞分布</h3>
+                <img src="demo-colab1.png" alt="">
+                <p>語数にばらつきはあるものの品詞分布はどれも同様の構成であった。出力が箇条書きの部分も多く、接続詞に注目し、文章の展開力を分析することはできなかった。</p>
+                
+
+                <h3>2,感情語と文末表現</h3>
+                <img src="demo-colab2.png" alt="">
+                <p>文字数当たりの感情語は、ポジティブな表現もネガティブな表現もClaudeが最も多い。</p>
+                <img src="demo-colab3.png" alt="">
+                <p>文字数当たりの提案表現は、Claudeが最も多い。しかし、キーワードが文中にある場合があり、文末だけでは判断できないこともあった。</p>
+                
+
+                <h3>3,漢字率と専門用語使用率</h3>
+                <img src="demo-colab4.png" alt="">
+                <p>漢字率や？の使用回数、比喩表現、わかりやすい表現、専門用語の少なさはChatGPTとGEeminiが各項目で同程度のスコアであった。Claudeは専門的な表現や言い回しが多く、漢字率も高い。</p>
+                
+            </div>
+            <div class="title">
+                <h2>考察</h2>   
+            </div>
+            <div class="comment">
+                <ul>
+                    <li> 事実を尋ねたいとき、詳しい調べをしたいとき → ChatGPT、Gemini</li>
+                    <li>私的な相談、アドバイス、寄り添ってほしいとき → Claude</li>
+                    <li>小学生が調べものに利用するとき → ChatGPT、Gemini</li>
+                </ul>
+                <p>これらを使いこなすために</p>
+                <ul>
+                    <li>使い道に応じた媒体の選定が重要</li>
+                    <li>もしくは、目的に沿った丁寧なプロンプトを設定することが効果的</li>
+                </ul>
+            </div>
+        </div>
+  </div>
+</body>
+</html>
